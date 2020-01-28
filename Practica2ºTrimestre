@@ -1,0 +1,120 @@
+package es.studium.Practica2ºTrimestre;
+
+import java.awt.Button;
+import java.awt.Dialog;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.Label;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
+
+public class Practica2ºTrimestre extends Frame implements WindowListener, ActionListener, KeyListener {
+	private static final long serialVersionUID = 1L;
+	
+	Label lblUser = new Label("Usuario");
+	Label lblClave = new Label("Clave");
+	Label lblError = new Label("Usuario y/o Clave Incorretos");
+	TextField txtUser = new TextField(20);
+	TextField txtClave = new TextField(20);
+	Button btnAceptar = new Button("Aceptar");
+	Button btnLimpiar = new Button("Limpiar");
+	Button btnVolver = new Button("Volver");
+	Frame frPrin = new Frame("Menu Principal");
+	Dialog dlgError = new Dialog(this, "ERROR", true);
+	int bloqueo = 0;
+	
+	
+	public Practica2ºTrimestre() {
+		setTitle("Login");
+		setLayout(new FlowLayout());
+		
+		add(lblUser);
+		add(txtUser);
+		add(lblClave);
+		add(txtClave);
+		add(btnAceptar);
+		add(btnLimpiar);
+		
+		dlgError.setLayout(new FlowLayout());
+		dlgError.add(lblError);
+		dlgError.add(btnVolver);
+		dlgError.setSize(200,100);
+		dlgError.setLocationRelativeTo(null);
+		
+		frPrin.setSize(400,200);
+		frPrin.setLocationRelativeTo(null);
+		
+		btnAceptar.addActionListener(this);
+		btnLimpiar.addActionListener(this);
+		btnVolver.addActionListener(this);
+		addWindowListener(this);
+		frPrin.addWindowListener(this);
+		dlgError.addWindowListener(this);
+		setLocationRelativeTo(null);
+		setSize(240,140);
+		setResizable(false);
+		setVisible(true);
+		
+		txtClave.setEchoChar('*');
+	}
+	
+	public static void main(String[] args) {
+		new Practica2ºTrimestre();
+	}
+
+	public void actionPerformed(ActionEvent ae) {
+		Object a = ae.getSource();
+		if(a.equals(btnAceptar)) {
+			if((txtUser.getText().equals("User"))&&(txtClave.getText().equals("Studium2020;"))) {
+				frPrin.setVisible(true);
+			}
+			else {
+				dlgError.setVisible(true);
+				bloqueo++;
+				if(bloqueo == 3) {
+					btnAceptar.setEnabled(false);
+				}
+			}
+		}
+		else if(a.equals(btnLimpiar)) {
+			txtUser.selectAll();
+			txtUser.setText("");
+			txtClave.selectAll();
+			txtClave.setText("");
+			txtUser.requestFocus();
+		}
+		else {
+			dlgError.setVisible(false);
+		}
+	}
+
+	public void windowActivated(WindowEvent arg0) {}
+	public void windowClosed(WindowEvent arg0) {}
+	public void windowClosing(WindowEvent arg0) {
+		if(dlgError.isActive()) {
+			dlgError.setVisible(false);
+		}
+		else if(frPrin.isActive()) {
+			frPrin.setVisible(false);
+		}
+		else {
+			System.exit(0);
+		}
+	}
+	public void windowDeactivated(WindowEvent arg0) {}
+	public void windowDeiconified(WindowEvent arg0) {}
+	public void windowIconified(WindowEvent arg0) {}
+	public void windowOpened(WindowEvent arg0) {}
+
+	public void keyPressed(KeyEvent arg0) {
+		
+	}
+	public void keyReleased(KeyEvent arg0) {}
+	public void keyTyped(KeyEvent arg0) {}
+}
